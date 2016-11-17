@@ -43,8 +43,13 @@ function interpretSearchResult(result){
   } else {
     var artist = result.artists.items[0];
     var artistName = artist.name
-    console.log(artistName);
+    document.getElementById("artist-name").innerHTML = artistName;
     var artistPhotoURL = artist.images[0].url;
+    var img = document.createElement('img')
+    img.src = artistPhotoURL;
+    document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
+    document.getElementById("artist-photo").appendChild(img);
+
     // searchAlbums(artistName);
   }
   clearSearch();
