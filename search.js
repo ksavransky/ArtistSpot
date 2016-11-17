@@ -50,61 +50,11 @@ function interpretSearchResult(result){
   clearSearch();
 }
 
-function clearSearch(){
-  var myNode = document.getElementById("results");
-  while (myNode.firstChild) {
-      myNode.removeChild(myNode.firstChild);
-  }
-}
-
-document.getElementById('search-form').addEventListener('keyup', function (e) {
-    e.preventDefault();
-    searchArtists(document.getElementById('query').value);
-    clearSearch();
-}, false);
-
-document.getElementById('search-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    console.log("submitted");
-    // pressing enter or clicking on search after typing string in search runs search
-    findArtist(document.getElementById('query').value);
-}, false);
-
-document.getElementById('results').addEventListener('click', function (e) {
-    e.preventDefault();
-    console.log("submitted");
-    //mouse click on a result runs the search
-    document.getElementById('query').value = document.getElementById('results').value;
-    findArtist(document.getElementById('results').value);
-}, false);
-
-
-document.getElementById('results').addEventListener('keypress', function (e) {
-    e.preventDefault();
-    //pressing enter while highlighting search result, runs the search with the highlighted result
-    if(e.which == 13) {
-      console.log("submitted");
-      document.getElementById('query').value = document.getElementById('results').value;
-      findArtist(document.getElementById('results').value);
-    }
-}, false);
-
-
-
-document.getElementById('query').addEventListener('keydown', function (e) {
-    if(e.keyCode == 40) {
-      e.preventDefault();
-      // document.getElementById("results").selectedIndex = "1"
-      // console.log(document.getElementById('results').firstChild);
-      document.getElementById("results").focus();
-    }
-}, false);
-
-
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//update results every time user enters a letter in search bar
 function typeAheadArtist(result, query){
     if(result.artists.total == 0){
       console.log("no such artist");
@@ -116,19 +66,79 @@ function typeAheadArtist(result, query){
         var reCapitalize = new RegExp(capitalizeFirstLetter(query));
         return re.test(name) || reCapitalize.test(name);
       })
-      // console.log(artistNames);
 
       for (var key in artistNames) {
         var optionElement = document.createElement("option");
         optionElement.value = artistNames[key];
         optionElement.innerHTML = artistNames[key];
-        // optionElement.click = findArtist(artistNames[key]);
-        // optionElement.onclick = "console.log(artistNames[key]);"
-        // console.log(optionElement);
         document.getElementById("results").appendChild(optionElement);
       }
     }
 }
+
+function clearSearch(){
+  var myNode = document.getElementById("results");
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
+  }
+}
+
+//update results every time user enters a letter in search bar
+document.getElementById('search-form').addEventListener('keyup', function (e) {
+    e.preventDefault();
+    searchArtists(document.getElementById('query').value);
+    clearSearch();
+}, false);
+
+// pressing enter or clicking on search after typing string in search runs search
+document.getElementById('search-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    console.log("submitted");
+    findArtist(document.getElementById('query').value);
+    document.getElementById("results").focus();
+    clearSearch();
+    document.getElementById("results").focus();
+}, false);
+
+//mouse click on a result runs the search
+document.getElementById('results').addEventListener('click', function (e) {
+    e.preventDefault();
+    console.log("submitted");
+    document.getElementById('query').value = document.getElementById('results').value;
+    findArtist(document.getElementById('results').value);
+}, false);
+
+
+//pressing enter while highlighting search result, runs the search with the highlighted result
+document.getElementById('results').addEventListener('keypress', function (e) {
+    e.preventDefault();
+    if(e.which == 13) {
+      console.log("submitted");
+      document.getElementById('query').value = document.getElementById('results').value;
+      findArtist(document.getElementById('results').value);
+    }
+}, false);
+
+
+//on down press while on query focus on result list and highlight first result
+document.getElementById('query').addEventListener('keydown', function (e) {
+    if(e.keyCode == 40) {
+      e.preventDefault();
+      document.getElementById("results").focus();
+      document.getElementById("results").selectedIndex = "0";
+    }
+}, false);
+
+//on up press at top of list focus on search
+document.getElementById('results').addEventListener('keydown', function (e) {
+    if(e.keyCode == 38 && document.getElementById("results").selectedIndex == 0) {
+      e.preventDefault();
+      document.getElementById("query").focus();
+    }
+}, false);
+
+
+
 
 
 //
