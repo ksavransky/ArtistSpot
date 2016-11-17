@@ -19,7 +19,7 @@ var findArtist = function (query) {
             type: 'artist'
         },
         success: function (response) {
-          interpretSearchResult(response);
+          displaySearchResult(response);
         }
     });
 };
@@ -37,17 +37,22 @@ var searchAlbums = function (query) {
     });
 };
 
-function interpretSearchResult(result){
+function displaySearchResult(result){
   if(result.artists.total == 0){
-    console.log("no such artist");
+    document.getElementById("artist-name").innerHTML = "No Such Artist Exists. Please search again.";
+    document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
   } else {
     var artist = result.artists.items[0];
+    //display artist name
     var artistName = artist.name
     document.getElementById("artist-name").innerHTML = artistName;
+    //display photo of artist
     var artistPhotoURL = artist.images[0].url;
     var img = document.createElement('img')
     img.src = artistPhotoURL;
-    document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
+    if(document.getElementById("artist-photo").firstChild != null){
+      document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
+    }
     document.getElementById("artist-photo").appendChild(img);
 
     // searchAlbums(artistName);
@@ -62,7 +67,7 @@ function capitalizeFirstLetter(string) {
 //update results every time user enters a letter in search bar
 function typeAheadArtist(result, query){
     if(result.artists.total == 0){
-      console.log("no such artist");
+      document.getElementById("artist-name").innerHTML = "No Such Artist Exists. Please search again.";
     } else {
       var artistNames = [];
       result.artists.items.forEach(artist => artistNames.push(artist.name))
@@ -98,7 +103,6 @@ document.getElementById('search-form').addEventListener('keyup', function (e) {
 // pressing enter or clicking on search after typing string in search runs search
 document.getElementById('search-form').addEventListener('submit', function (e) {
     e.preventDefault();
-    console.log("submitted");
     findArtist(document.getElementById('query').value);
     document.getElementById("results").focus();
     clearSearch();
@@ -108,7 +112,6 @@ document.getElementById('search-form').addEventListener('submit', function (e) {
 //mouse click on a result runs the search
 document.getElementById('results').addEventListener('click', function (e) {
     e.preventDefault();
-    console.log("submitted");
     document.getElementById('query').value = document.getElementById('results').value;
     findArtist(document.getElementById('results').value);
 }, false);
@@ -118,7 +121,6 @@ document.getElementById('results').addEventListener('click', function (e) {
 document.getElementById('results').addEventListener('keypress', function (e) {
     e.preventDefault();
     if(e.which == 13) {
-      console.log("submitted");
       document.getElementById('query').value = document.getElementById('results').value;
       findArtist(document.getElementById('results').value);
     }
