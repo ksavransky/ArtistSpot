@@ -1,10 +1,10 @@
-body {
+/*body {
     padding: 20px;
 }
-#search-form, .form-control {
+/*#search-form, .form-control {
     margin-bottom: 20px;
-}
-.cover {
+}*/
+/*.cover {
     width: 300px;
     height: 300px;
     display: inline-block;
@@ -15,4 +15,14 @@ body {
 }
 .cover.playing {
     border: 5px solid #e45343;
+}*/
+
+select{
+    overflow:auto;
+
 }
+
+
+/*select option selected{
+  color: blue;
+}*/
