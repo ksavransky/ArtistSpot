@@ -66,9 +66,7 @@ function capitalizeFirstLetter(string) {
 
 //update results every time user enters a letter in search bar
 function typeAheadArtist(result, query){
-    if(result.artists.total == 0){
-      document.getElementById("artist-name").innerHTML = "No Such Artist Exists. Please search again.";
-    } else {
+    if(result.artists.total != 0){
       var artistNames = [];
       result.artists.items.forEach(artist => artistNames.push(artist.name))
       artistNames = artistNames.filter(function(name){
