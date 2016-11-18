@@ -31,11 +31,27 @@ var searchAlbums = function (query) {
             q: query,
             type: 'album'
         },
-        success: function (response) {
-            // console.log(response);
+        success: function (albumsObject) {
+            console.log(albumsObject);
+            displayAlbums(albumsObject);
         }
     });
 };
+
+function displayAlbums(albumsObject){
+  var albums = albumsObject.albums.items;
+  for(var i = 0; i < 10; i++){
+    var albumName = albums[i].name;
+    var albumImageURL = albums[i].images[1].url;
+    var albumDiv = document.createElement('div');
+    var text = document.createTextNode(`${albumName}`);
+    var img = document.createElement('img')
+    img.src = albumImageURL;
+    albumDiv.appendChild(text);
+    albumDiv.appendChild(img);
+    document.getElementById("album-container").appendChild(albumDiv);
+  }
+}
 
 function displaySearchResult(result){
   if(result.artists.total == 0){
@@ -55,7 +71,7 @@ function displaySearchResult(result){
     }
     document.getElementById("artist-photo").appendChild(img);
 
-    // searchAlbums(artistName);
+    searchAlbums(artistName);
   }
   clearSearch();
 }
@@ -86,6 +102,10 @@ function typeAheadArtist(result, query){
 
 function clearSearch(){
   var myNode = document.getElementById("results");
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
+  }
+  var myNode = document.getElementById("album-container");
   while (myNode.firstChild) {
       myNode.removeChild(myNode.firstChild);
   }
