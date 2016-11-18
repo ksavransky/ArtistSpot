@@ -32,23 +32,55 @@ var searchAlbums = function (query) {
             type: 'album'
         },
         success: function (albumsObject) {
-            console.log(albumsObject);
             displayAlbums(albumsObject);
         }
     });
 };
+
+var audioObject = null;
+
+var getAlbumTracks = function (albumId) {
+  $.ajax({
+      url: 'https://api.spotify.com/v1/albums/' + albumId,
+      success: function (tracksObject) {
+          console.log(tracksObject);
+          if(audioObject != null){
+            audioObject.pause();
+          }
+          audioObject = new Audio(tracksObject.tracks.items[0].preview_url);
+          audioObject.play();
+      }
+  });
+}
+
+var alreadyPlayingAlbumId = null;
 
 function displayAlbums(albumsObject){
   var albums = albumsObject.albums.items;
   for(var i = 0; i < 10; i++){
     var albumName = albums[i].name;
     var albumImageURL = albums[i].images[1].url;
+    var albumId = albums[i].id;
     var albumDiv = document.createElement('div');
     var text = document.createTextNode(`${albumName}`);
     var img = document.createElement('img')
     img.src = albumImageURL;
     albumDiv.appendChild(text);
     albumDiv.appendChild(img);
+    albumDiv.id = albumId;
+
+    albumDiv.addEventListener('click', function (e) {
+        e.preventDefault();
+        var spotifyAlbumId = e.path[1].id;
+        if(alreadyPlayingAlbumId == spotifyAlbumId){
+          audioObject.pause();
+          alreadyPlayingAlbumId = null;
+        }else {
+          getAlbumTracks(spotifyAlbumId);
+          alreadyPlayingAlbumId = spotifyAlbumId;
+        }
+    }, false);
+
     document.getElementById("album-container").appendChild(albumDiv);
   }
 }
