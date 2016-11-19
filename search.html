@@ -5,23 +5,31 @@
         <title>Artist Search</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
+        <link href="https://fonts.googleapis.com/css?family=Lobster|Palanquin+Dark" rel="stylesheet">
 
     </head>
     <body>
       <div class="container">
-          <h1>Search for an Artist</h1>
-          <p>Type an artist name and click on "Search".</p>
-          <form id="search-form" autocomplete="off">
-              <input type="text" id="query" value="" class="form-control" placeholder="Type an Artist Name"/>
-              <input type="submit" id="search" class="btn btn-primary" value="Search" />
-          </form>
-          <select id="results" size="5"></select>
-          <div id="artist-name"> </div>
-          <div id="artist-photo"> </div>
+          <div id="search-artist-box">
+            <div id="search-box">
+              <h1>Search for an Artist</h1>
+              <form id="search-form" autocomplete="off">
+                  <input type="text" id="query" value="" class="form-control" placeholder="Type an Artist's Name"/>
+                  <!-- <input type="submit" id="search" class="btn btn-primary" value="Search" /> -->
+              </form>
+              <select id="results" size="5"></select>
+            </div>
 
+            <div id="artist-box">
+              <div id="artist-name"> </div>
+              <div id="artist-photo"> </div>
+            </div>
+          </div>
+
+          <div id="album-label"> Artist's Albums (click to listen to preview): </div>
           <div id="album-container">
-            
+
+
           </div>
       </div>
 

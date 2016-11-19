@@ -57,15 +57,22 @@ var alreadyPlayingAlbumId = null;
 
 function displayAlbums(albumsObject){
   var albums = albumsObject.albums.items;
-  for(var i = 0; i < 10; i++){
+  for(var i = 0; i < albums.length; i++){
     var albumName = albums[i].name;
     var albumImageURL = albums[i].images[1].url;
     var albumId = albums[i].id;
     var albumDiv = document.createElement('div');
-    var text = document.createTextNode(`${albumName}`);
+    albumDiv.className = "album-box"
+
+    var textDiv = document.createElement('div');
+    textDiv.innerHTML = `${albumName}`
+    textDiv.className = "album-text"
+
     var img = document.createElement('img')
     img.src = albumImageURL;
-    albumDiv.appendChild(text);
+    img.className = "album-image"
+
+    albumDiv.appendChild(textDiv);
     albumDiv.appendChild(img);
     albumDiv.id = albumId;
 
@@ -98,6 +105,7 @@ function displaySearchResult(result){
     var artistPhotoURL = artist.images[0].url;
     var img = document.createElement('img')
     img.src = artistPhotoURL;
+    img.className = "artist-image";
     if(document.getElementById("artist-photo").firstChild != null){
       document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
     }
@@ -137,7 +145,7 @@ function clearSearch(){
   while (myNode.firstChild) {
       myNode.removeChild(myNode.firstChild);
   }
-  var myNode = document.getElementById("album-container");
+  myNode = document.getElementById("album-container");
   while (myNode.firstChild) {
       myNode.removeChild(myNode.firstChild);
   }
