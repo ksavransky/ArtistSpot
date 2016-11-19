@@ -65,20 +65,32 @@ function displayAlbums(albumsObject){
     var albumDiv = document.createElement('div');
     albumDiv.className = "album-box"
 
+    var textPlayDiv = document.createElement('div');
+    textPlayDiv.className = "album-play-text";
+
     var textDiv = document.createElement('div');
-    textDiv.innerHTML = `${albumName}`
-    textDiv.className = "album-text"
+    textDiv.innerHTML = `${albumName}`;
+    textDiv.className = "album-text";
 
-    var img = document.createElement('img')
+    var playImg = document.createElement('img')
+    playImg.src = "play.jpg";
+    playImg.className = "play-image";
+
+    var img = document.createElement('img');
     img.src = albumImageURL;
-    img.className = "album-image"
+    img.className = "album-image";
 
-    albumDiv.appendChild(textDiv);
+    textPlayDiv.appendChild(textDiv);
+    textPlayDiv.appendChild(playImg);
+    textPlayDiv.id = albumId;
+
+    albumDiv.appendChild(textPlayDiv);
     albumDiv.appendChild(img);
     albumDiv.id = albumId;
 
-    albumDiv.addEventListener('click', function (e) {
+    textPlayDiv.addEventListener('click', function (e) {
         e.preventDefault();
+        console.log(e);
         var spotifyAlbumId = e.path[1].id;
         if(alreadyPlayingAlbumId == spotifyAlbumId){
           audioObject.pause();
