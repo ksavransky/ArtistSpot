@@ -57,6 +57,7 @@ var alreadyPlayingAlbumId = null;
 
 function displayAlbums(albumsObject){
   var albums = albumsObject.albums.items;
+  document.getElementById("album-label").style.visibility = "visible";
   for(var i = 0; i < albums.length; i++){
     var albumName = albums[i].name;
     var albumImageURL = albums[i].images[1].url;
@@ -97,6 +98,11 @@ function displaySearchResult(result){
     document.getElementById("artist-name").innerHTML = "No Such Artist Exists. Please search again.";
     document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
   } else {
+    // if(document.getElementById("start-image")){
+    //   var element = document.getElementById("start-image");
+    //   element.parentNode.removeChild(element);
+    // }
+
     var artist = result.artists.items[0];
     //display artist name
     var artistName = artist.name
