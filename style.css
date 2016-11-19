@@ -1,7 +1,7 @@
 body{
   font-family: 'Lobster', cursive;
   display: flex;
-  background-color: whitesmoke;
+  background-color: #efefef;
   color: black;
 }
 
@@ -43,13 +43,13 @@ select:empty {
   flex-direction: column;
   margin-left: 100px;
   margin-top: 27px;
-  height: 450px;
+  margin-bottom: 10px;
+  height: 430px;
   width: 400px;
   font-size: 22px;
-  /*border-style: groove;
-  border-radius: 2px;
-  border-color: black;*/
+  background-image: url("whitenotes.jpg");
 }
+
 
 #artist-name{
   margin-bottom: 5px;
@@ -57,7 +57,7 @@ select:empty {
 
 .artist-image{
   height: 400px;
-  width: 400px;
+  width: auto;
 }
 
 #start-image{

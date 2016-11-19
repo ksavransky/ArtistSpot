@@ -105,15 +105,16 @@ function displayAlbums(albumsObject){
   }
 }
 
+
+
 function displaySearchResult(result){
+  document.getElementById("artist-box").style.backgroundImage = "none";
   if(result.artists.total == 0){
     document.getElementById("artist-name").innerHTML = "No Such Artist Exists. Please search again.";
     document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
+    document.getElementById("album-label").style.visibility = "hidden";
   } else {
-    // if(document.getElementById("start-image")){
-    //   var element = document.getElementById("start-image");
-    //   element.parentNode.removeChild(element);
-    // }
+    document.getElementById("album-label").style.visibility = "visible";
 
     var artist = result.artists.items[0];
     //display artist name
