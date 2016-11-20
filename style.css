@@ -14,11 +14,6 @@ select:empty {
    visibility: hidden;
 }
 
-/*option:hover{
-  background-color: red;
-}*/
-
-
 .container{
   display: flex;
   flex-direction: column;

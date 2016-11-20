@@ -43,7 +43,6 @@ var getAlbumTracks = function (albumId) {
   $.ajax({
       url: 'https://api.spotify.com/v1/albums/' + albumId,
       success: function (tracksObject) {
-          console.log(tracksObject);
           if(audioObject != null){
             audioObject.pause();
           }
@@ -56,12 +55,14 @@ var getAlbumTracks = function (albumId) {
 var alreadyPlayingAlbumId = null;
 
 function displayAlbums(albumsObject){
-  var albums = albumsObject.albums.items;
   document.getElementById("album-label").style.visibility = "visible";
+
+  var albums = albumsObject.albums.items;
   for(var i = 0; i < albums.length; i++){
     var albumName = albums[i].name;
     var albumImageURL = albums[i].images[1].url;
     var albumId = albums[i].id;
+
     var albumDiv = document.createElement('div');
     albumDiv.className = "album-box"
 
@@ -75,6 +76,7 @@ function displayAlbums(albumsObject){
     var playImg = document.createElement('img')
     playImg.src = "play.jpg";
     playImg.className = "play-image";
+    playImg.id = albumId;
 
     var img = document.createElement('img');
     img.src = albumImageURL;
@@ -82,22 +84,21 @@ function displayAlbums(albumsObject){
 
     textPlayDiv.appendChild(textDiv);
     textPlayDiv.appendChild(playImg);
-    textPlayDiv.id = albumId;
 
     albumDiv.appendChild(textPlayDiv);
     albumDiv.appendChild(img);
-    albumDiv.id = albumId;
 
-    textPlayDiv.addEventListener('click', function (e) {
+    playImg.addEventListener('click', function (e) {
         e.preventDefault();
-        console.log(e);
-        var spotifyAlbumId = e.path[1].id;
+        var spotifyAlbumId = e.path[0].id;
         if(alreadyPlayingAlbumId == spotifyAlbumId){
           audioObject.pause();
           alreadyPlayingAlbumId = null;
-        }else {
+          document.getElementById(spotifyAlbumId).src = "play.jpg";
+        } else {
           getAlbumTracks(spotifyAlbumId);
           alreadyPlayingAlbumId = spotifyAlbumId;
+          document.getElementById(spotifyAlbumId).src = "pause.jpg";
         }
     }, false);
 
@@ -106,9 +107,9 @@ function displayAlbums(albumsObject){
 }
 
 
-
 function displaySearchResult(result){
   document.getElementById("artist-box").style.backgroundImage = "none";
+
   if(result.artists.total == 0){
     document.getElementById("artist-name").innerHTML = "No Such Artist Exists. Please search again.";
     document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
@@ -220,41 +221,3 @@ document.getElementById('results').addEventListener('keydown', function (e) {
       document.getElementById("query").focus();
     }
 }, false);
-
-
-
-
-
-//
-//
-//
-//
-//
-// // find template and compile it
-// // var templateSource = document.getElementById('results-template').innerHTML,
-//     // template = Handlebars.compile(templateSource),
-//     // resultsPlaceholder = document.getElementById('results')
-//     // playingCssClass = 'playing',
-//     // audioObject = null;
-//
-// // var fetchTracks = function (albumId, callback) {
-// //     $.ajax({
-// //         url: 'https://api.spotify.com/v1/albums/' + albumId,
-// //         success: function (response) {
-// //             callback(response);
-// //         }
-// //     });
-// // };
-// //
-// // var searchAlbums = function (query) {
-//     $.ajax({
-//         url: 'https://api.spotify.com/v1/search',
-//         data: {
-//             q: query,
-//             type: 'album'
-//         },
-//         success: function (response) {
-//             resultsPlaceholder.innerHTML = template(response);
-//         }
-//     });
-// };
