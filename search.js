@@ -90,7 +90,14 @@ function displayAlbums(albumsObject){
 
     playImg.addEventListener('click', function (e) {
         e.preventDefault();
-        var spotifyAlbumId = e.path[0].id;
+        console.log(e);
+        var spotifyAlbumId = null;
+        if (navigator.userAgent.search("Firefox") >= 0) {
+          spotifyAlbumId = e.target.id;
+        } else{
+          spotifyAlbumId = e.srcElement.id;
+        }
+
         if(alreadyPlayingAlbumId == spotifyAlbumId){
           audioObject.pause();
           alreadyPlayingAlbumId = null;
@@ -142,6 +149,7 @@ function capitalizeFirstLetter(string) {
 
 //update results every time user enters a letter in search bar
 function typeAheadArtist(result, query){
+    document.getElementById("search-box").style.height = "auto";
     if(result.artists.total != 0){
       var artistNames = [];
       result.artists.items.forEach(artist => artistNames.push(artist.name))
@@ -169,6 +177,7 @@ function clearSearch(){
   while (myNode.firstChild) {
       myNode.removeChild(myNode.firstChild);
   }
+  document.getElementById("search-box").style.height = "120px";
 }
 
 //update results every time user enters a letter in search bar

@@ -24,13 +24,14 @@ select:empty {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
 }
 
 #search-box{
   display: flex;
   flex-direction: column;
-
+  height: 120px;
 }
 
 #artist-box{
