@@ -52,6 +52,73 @@ var getAlbumTracks = function (albumId) {
   });
 }
 
+//update results every time user enters a letter in search bar
+function typeAheadArtist(result, query){
+    document.getElementById("search-box").style.height = "auto";
+
+    if(result.artists.total != 0){
+      var artistNames = [];
+      result.artists.items.forEach(artist => artistNames.push(artist.name))
+      artistNames = artistNames.filter(function(name){
+        var re = new RegExp(query);
+        var reCapitalize = new RegExp(capitalizeFirstLetter(query));
+        return re.test(name) || reCapitalize.test(name);
+      });
+
+      for (var key in artistNames) {
+        var optionElement = document.createElement("option");
+        optionElement.value = artistNames[key];
+        optionElement.innerHTML = artistNames[key];
+        document.getElementById("results").appendChild(optionElement);
+      }
+    }
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function displaySearchResult(result){
+  document.getElementById("artist-box").style.backgroundImage = "none";
+
+  if(result.artists.total == 0){
+    document.getElementById("artist-name").innerHTML = "No Such Artist Exists. Please search again.";
+    document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
+    document.getElementById("album-label").style.visibility = "hidden";
+  } else {
+    document.getElementById("album-label").style.visibility = "visible";
+
+    var artist = result.artists.items[0];
+    //display artist name
+    var artistName = artist.name
+    document.getElementById("artist-name").innerHTML = artistName;
+    //display photo of artist
+    var artistPhotoURL = artist.images[0].url;
+    var img = document.createElement('img')
+    img.src = artistPhotoURL;
+    img.className = "artist-image";
+    if(document.getElementById("artist-photo").firstChild != null){
+      document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
+    }
+    document.getElementById("artist-photo").appendChild(img);
+
+    searchAlbums(artistName);
+  }
+  clearSearch();
+}
+
+function clearSearch(){
+  var myNode = document.getElementById("results");
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
+  }
+  myNode = document.getElementById("album-container");
+  while (myNode.firstChild) {
+      myNode.removeChild(myNode.firstChild);
+  }
+  document.getElementById("search-box").style.height = "120px";
+}
+
 var alreadyPlayingAlbumId = null;
 
 function displayAlbums(albumsObject){
@@ -90,7 +157,6 @@ function displayAlbums(albumsObject){
 
     playImg.addEventListener('click', function (e) {
         e.preventDefault();
-        console.log(e);
         var spotifyAlbumId = null;
         if (navigator.userAgent.search("Firefox") >= 0) {
           spotifyAlbumId = e.target.id;
@@ -113,72 +179,6 @@ function displayAlbums(albumsObject){
   }
 }
 
-
-function displaySearchResult(result){
-  document.getElementById("artist-box").style.backgroundImage = "none";
-
-  if(result.artists.total == 0){
-    document.getElementById("artist-name").innerHTML = "No Such Artist Exists. Please search again.";
-    document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
-    document.getElementById("album-label").style.visibility = "hidden";
-  } else {
-    document.getElementById("album-label").style.visibility = "visible";
-
-    var artist = result.artists.items[0];
-    //display artist name
-    var artistName = artist.name
-    document.getElementById("artist-name").innerHTML = artistName;
-    //display photo of artist
-    var artistPhotoURL = artist.images[0].url;
-    var img = document.createElement('img')
-    img.src = artistPhotoURL;
-    img.className = "artist-image";
-    if(document.getElementById("artist-photo").firstChild != null){
-      document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
-    }
-    document.getElementById("artist-photo").appendChild(img);
-
-    searchAlbums(artistName);
-  }
-  clearSearch();
-}
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-//update results every time user enters a letter in search bar
-function typeAheadArtist(result, query){
-    document.getElementById("search-box").style.height = "auto";
-    if(result.artists.total != 0){
-      var artistNames = [];
-      result.artists.items.forEach(artist => artistNames.push(artist.name))
-      artistNames = artistNames.filter(function(name){
-        var re = new RegExp(query);
-        var reCapitalize = new RegExp(capitalizeFirstLetter(query));
-        return re.test(name) || reCapitalize.test(name);
-      })
-
-      for (var key in artistNames) {
-        var optionElement = document.createElement("option");
-        optionElement.value = artistNames[key];
-        optionElement.innerHTML = artistNames[key];
-        document.getElementById("results").appendChild(optionElement);
-      }
-    }
-}
-
-function clearSearch(){
-  var myNode = document.getElementById("results");
-  while (myNode.firstChild) {
-      myNode.removeChild(myNode.firstChild);
-  }
-  myNode = document.getElementById("album-container");
-  while (myNode.firstChild) {
-      myNode.removeChild(myNode.firstChild);
-  }
-  document.getElementById("search-box").style.height = "120px";
-}
 
 //update results every time user enters a letter in search bar
 document.getElementById('search-form').addEventListener('keyup', function (e) {
