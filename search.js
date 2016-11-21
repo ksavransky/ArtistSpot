@@ -141,7 +141,7 @@ function displayAlbums(albumsObject){
     textDiv.className = "album-text";
 
     var playImg = document.createElement('img')
-    playImg.src = "play.jpg";
+    playImg.src = "assets/play.jpg";
     playImg.className = "play-image";
     playImg.id = albumId;
 
@@ -167,11 +167,11 @@ function displayAlbums(albumsObject){
         if(alreadyPlayingAlbumId == spotifyAlbumId){
           audioObject.pause();
           alreadyPlayingAlbumId = null;
-          document.getElementById(spotifyAlbumId).src = "play.jpg";
+          document.getElementById(spotifyAlbumId).src = "assets/play.jpg";
         } else {
           getAlbumTracks(spotifyAlbumId);
           alreadyPlayingAlbumId = spotifyAlbumId;
-          document.getElementById(spotifyAlbumId).src = "pause.jpg";
+          document.getElementById(spotifyAlbumId).src = "assets/pause.jpg";
         }
     }, false);
 
