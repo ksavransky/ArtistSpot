@@ -1,3 +1,5 @@
+// Ajax requests
+
 var searchArtists = function (query) {
     $.ajax({
         url: 'https://api.spotify.com/v1/search',
@@ -52,6 +54,8 @@ var getAlbumTracks = function (albumId) {
   });
 }
 
+// Main functions
+
 //update results every time user enters a letter in search bar
 function typeAheadArtist(result, query){
     document.getElementById("search-box").style.height = "auto";
@@ -59,12 +63,14 @@ function typeAheadArtist(result, query){
     if(result.artists.total != 0){
       var artistNames = [];
       result.artists.items.forEach(artist => artistNames.push(artist.name))
+      // using regex to filter ajax search result, to display only artists that match what we type
       artistNames = artistNames.filter(function(name){
         var re = new RegExp(query);
         var reCapitalize = new RegExp(capitalizeFirstLetter(query));
         return re.test(name) || reCapitalize.test(name);
       });
 
+      // creating dropdown select options based on artistNames we filtered
       for (var key in artistNames) {
         var optionElement = document.createElement("option");
         optionElement.value = artistNames[key];
@@ -90,17 +96,18 @@ function displaySearchResult(result){
 
     var artist = result.artists.items[0];
     //display artist name
-    var artistName = artist.name
+    var artistName = artist.name;
     document.getElementById("artist-name").innerHTML = artistName;
     //display photo of artist
     var artistPhotoURL = artist.images[0].url;
-    var img = document.createElement('img')
+    var img = document.createElement('img');
     img.src = artistPhotoURL;
     img.className = "artist-image";
-    if(document.getElementById("artist-photo").firstChild != null){
-      document.getElementById("artist-photo").removeChild(document.getElementById("artist-photo").firstChild);
+    var artistPhoto = document.getElementById("artist-photo")
+    if(artistPhoto.firstChild != null){
+      artistPhoto.removeChild(artistPhoto.firstChild);
     }
-    document.getElementById("artist-photo").appendChild(img);
+    artistPhoto.appendChild(img);
 
     searchAlbums(artistName);
   }
@@ -118,6 +125,7 @@ function clearSearch(){
   }
   document.getElementById("search-box").style.height = "120px";
 }
+
 
 var alreadyPlayingAlbumId = null;
 
@@ -158,12 +166,16 @@ function displayAlbums(albumsObject){
     playImg.addEventListener('click', function (e) {
         e.preventDefault();
         var spotifyAlbumId = null;
+
+        // get album id from clicking on play button (I assigned album id to it above)
+        // handle syntax from firefox and other browsers
         if (navigator.userAgent.search("Firefox") >= 0) {
           spotifyAlbumId = e.target.id;
         } else{
           spotifyAlbumId = e.srcElement.id;
         }
 
+        // if click on album that's already playing pause music, else get Album tracks and play preview track
         if(alreadyPlayingAlbumId == spotifyAlbumId){
           audioObject.pause();
           alreadyPlayingAlbumId = null;
@@ -179,6 +191,7 @@ function displayAlbums(albumsObject){
   }
 }
 
+// Listeners
 
 //update results every time user enters a letter in search bar
 document.getElementById('search-form').addEventListener('keyup', function (e) {
@@ -214,7 +227,7 @@ document.getElementById('results').addEventListener('keypress', function (e) {
 }, false);
 
 
-//on down press while on query focus on result list and highlight first result
+//on down arrow press while on query focus on result list and highlight first result
 document.getElementById('query').addEventListener('keydown', function (e) {
     if(e.keyCode == 40) {
       e.preventDefault();
@@ -223,7 +236,7 @@ document.getElementById('query').addEventListener('keydown', function (e) {
     }
 }, false);
 
-//on up press at top of list focus on search
+//on up arrow press at top of list focus on search
 document.getElementById('results').addEventListener('keydown', function (e) {
     if(e.keyCode == 38 && document.getElementById("results").selectedIndex == 0) {
       e.preventDefault();
