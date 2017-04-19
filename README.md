@@ -1,6 +1,6 @@
 # Artist Spot
 
-###[Link to Artist Spot](http://analyst-mistake-86784.bitballoon.com/)
+### [Link to Artist Spot](http://analyst-mistake-86784.bitballoon.com/)
 
 This application allows the user to search for a music artist using the public Spotify API. A successful search will result in displaying the artist's photo as well as the photos of all of the artist's albums available on Spotify. The user is also able to play a preview track from each of the albums. Enjoy!.
 
@@ -16,9 +16,9 @@ Artist Spot was developed using Javascript, AJAX, Flexbox CSS.
 
 ![Artist Spot](assets/ArtistSpot.png)
 
-####Sample Code Snippet:
+#### Sample Code Snippet:
 
-######Type Ahead Search Feature
+###### Type Ahead Search Feature
 
 ```javascript
 
@@ -45,7 +45,7 @@ function typeAheadArtist(result, query){
 
 ```
 
-######AJAX for Artist Search
+###### AJAX for Artist Search
 
 ```javascript
 
